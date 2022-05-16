@@ -1,3 +1,5 @@
+import ServerAPI from "./server_api.js";
+
 const tableHeader = {
     hotel:
         `<th>Hotel ID</th>
@@ -132,7 +134,7 @@ const cyrb53 = function(str, seed = 0) {
 $(document).ready(() => {
     if (sessionStorage.getItem("name") === null) {
         alert("Access denied, not logged in!");
-        window.open("http://localhost:5000", "_self");
+        window.open('/', "_self");
 
         return;
     }
@@ -186,7 +188,7 @@ function displayTableHeader(id) {
 
 function getDataFrom(table) {
     if (table === 'verify_lb_certificate') {
-        fetch(`http://localhost:5000/get-certificates`, {
+        fetch(`${ ServerAPI.server }/get-certificates`, {
             method: 'GET',
             headers: { "Content-Type": "application/json" }
         }).then(response => {
@@ -197,7 +199,7 @@ function getDataFrom(table) {
             });
         });
     } else {
-        fetch(`http://localhost:5000/get/${ table }`, {
+        fetch(`${ ServerAPI.server }/get/${ table }`, {
             method: 'GET',
             headers: { "Content-Type": "application/json" }
         }).then(response => {
@@ -234,7 +236,7 @@ function displayCertificateVerification() {
 }
 
 function verifyCertificate(evt) {
-    fetch(`http://localhost:5000/verify-certificate/${ sessionStorage.getItem("uid") }`, {
+    fetch(`${ ServerAPI.server }/verify-certificate/${ sessionStorage.getItem("uid") }`, {
         method: 'PUT',
         headers: {'Content-Type': 'text/plain'},
         body: currentTableData.hashMap[evt.currentTarget.id]
@@ -287,7 +289,7 @@ function deleteRow(evt) {
     const row = currentTableData[evt.currentTarget.id.split('-')[1]];
 
     if (currentTableData.currentTable === 'lb_certificate') {
-        fetch(`http://localhost:5000/delete-certificate`, {
+        fetch(`${ ServerAPI.server }/delete-certificate`, {
             method: 'DELETE',
             headers: { "Content-Type": "text/plain" },
             body: row.certificate
@@ -302,7 +304,7 @@ function deleteRow(evt) {
             }
         });
     } else {
-        fetch(`http://localhost:5000/delete/${ currentTableData.currentTable }/${ Object.keys(row)[0] }/${ row[Object.keys(row)[0]] }`, {
+        fetch(`${ ServerAPI.server }/delete/${ currentTableData.currentTable }/${ Object.keys(row)[0] }/${ row[Object.keys(row)[0]] }`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" }
         }).then(response => {
@@ -396,7 +398,7 @@ function saveEdit(evt, rowData) {
         bodyData[key] = document.getElementById(key).value.length === 0 ? null : document.getElementById(key).value;
     }
 
-    fetch(`http://localhost:5000/update/${ currentTableData.currentTable }/${ evt.currentTarget.id }`, {
+    fetch(`${ ServerAPI.server }/update/${ currentTableData.currentTable }/${ evt.currentTarget.id }`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(bodyData)
@@ -419,7 +421,7 @@ function addData() {
     }
 
     console.log(currentTableData.currentTable);
-    fetch(`http://localhost:5000/add/${ currentTableData.currentTable }`, {
+    fetch(`${ ServerAPI.server }/add/${ currentTableData.currentTable }`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(bodyData)

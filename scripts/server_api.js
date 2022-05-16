@@ -3,6 +3,7 @@
  * To use this class: `import ServerAPI from "./server_api";`
  */
 class ServerAPI {
+    static server = "http://localhost:5001";
     /**
      * Registers user as a general user.
      * 
@@ -32,7 +33,7 @@ class ServerAPI {
      * )
      */
     static registerGeneralUser(email, password, phoneNum, fname, mname, lname, callback, isAdmin=false) {
-        fetch("http://localhost:5000/register-user/general", {
+        fetch(`${ ServerAPI.server }/register-user/general`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -89,7 +90,7 @@ class ServerAPI {
      */
     static registerLocalBusiness(email, password, phoneNum, addressLine1, addressLine2, 
         addressLine3, pincode, businessName, aadhaarNum, callback) {
-        fetch("http://localhost:5000/register-user/local-business", {
+        fetch(`${ ServerAPI.server }/register-user/local-business`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -146,7 +147,7 @@ class ServerAPI {
      */
     static loginUser(key, password, isEmail, callback) {
         if (isEmail) {
-            fetch("http://localhost:5000/login-email", {
+            fetch(`${ ServerAPI.server }/login-email`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -165,7 +166,7 @@ class ServerAPI {
                 }
             });
         } else {
-            fetch("http://localhost:5000/login-phone", {
+            fetch(`${ ServerAPI.server }/login-phone`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -192,9 +193,9 @@ class ServerAPI {
         var url;
 
         if (type === null) {
-            url = `http://localhost:5000/available-vehicles?from_time=${ fromTime }&to_time=${ toTime }`;
+            url = `${ ServerAPI.server }/available-vehicles?from_time=${ fromTime }&to_time=${ toTime }`;
         } else {
-            url = `http://localhost:5000/available-vehicles?from_time=${ fromTime }&to_time=${ toTime }&type=${ type }`;
+            url = `${ ServerAPI.server }/available-vehicles?from_time=${ fromTime }&to_time=${ toTime }&type=${ type }`;
         }
 
         fetch(url, {
@@ -210,7 +211,7 @@ class ServerAPI {
     }
 
     static bookVehicle(bookedBy, fromDate, tillDate, licensePlate, callback) {
-        fetch("http://localhost:5000/book-vehicle", {
+        fetch(`${ ServerAPI.server }/book-vehicle`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ 
@@ -233,7 +234,7 @@ class ServerAPI {
     }
 
     static getBookedVehicles(bookedBy, callback) {
-        fetch(`http://localhost:5000/booked-vehicles/${ bookedBy }`, {
+        fetch(`${ ServerAPI.server }/booked-vehicles/${ bookedBy }`, {
             method: "GET",
             headers: { "Content-Type": "application/json" }
         }).then(response => {
@@ -250,7 +251,7 @@ class ServerAPI {
     }
 
     static cancelBooking(bookingID, callback) {
-        fetch(`http://localhost:5000/cancel-booking/${ bookingID }`, {
+        fetch(`${ ServerAPI.server }/cancel-booking/${ bookingID }`, {
             method: "DELETE",
             headers: { "Content-Type": "application/json" }
         }).then(response => {
@@ -259,7 +260,7 @@ class ServerAPI {
     }
 
     static getHotels(callback) {
-        fetch(`http://localhost:5000/get-hotels-info`, {
+        fetch(`${ ServerAPI.server }/get-hotels-info`, {
             method: "GET",
             headers: { "Content-Type": "application/json" }
         }).then(response => {
@@ -274,7 +275,7 @@ class ServerAPI {
     }
 
     static getHotelsWithinRange(lowestPrice, highestPrice, callback) {
-        fetch(`http://localhost:5000/get-hotels-info?lowest_price=${ lowestPrice }&highest_price=${ highestPrice }`, { 
+        fetch(`${ ServerAPI.server }/get-hotels-info?lowest_price=${ lowestPrice }&highest_price=${ highestPrice }`, { 
             method: "GET",
             headers: { "Content-Type": "application/json" }
         }).then(response => {
@@ -289,7 +290,7 @@ class ServerAPI {
     }
 
     static getFeedbackOn(resourceID, callback) {
-        fetch(`http://localhost:5000/feedback-on/${ resourceID }`, {
+        fetch(`${ ServerAPI.server }/feedback-on/${ resourceID }`, {
             method: "GET",
             headers: { "Content-Type": "application/json" }
         }).then(response => {
