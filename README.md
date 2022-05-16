@@ -4,9 +4,10 @@
 * Node 14.17.0
 
 ### Setup
-1. The server will run at port 5000 by default. To change it, go to line 6 in `./server/server.js`.
-2. In case of any changes to backend server, change the value of `server` variable in `./server/server.js` at line 7.
-3. Make the same changes in `./scripts/server_api.js`. Change the value of `server` variable at line 6.
+1. Execute: `npm install`. This will install all the required node modules.
+2. The server will run at port 5000 by default. To change it, go to line 6 in `./server/server.js`.
+3. In case of any changes to backend server, change the value of `server` variable in `./server/server.js` at line 7.
+4. Make the same changes in `./scripts/server_api.js`. Change the value of `server` variable at line 6.
 
 ### Steps to view website:
 In `./server` folder, run `npm start` to start the frontend server. Visit http://localhost:5000 to view the frontend.
