@@ -1,0 +1,33 @@
+.filters-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 3em;
+    padding: 2em;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgb(158, 158, 158);
+    row-gap: 1em;
+    width: 80%;
+}
+
+.filters-container table {
+    border-collapse: collapse;
+}
+
+.filters-container td {
+    padding: 0.5em 1em;
+}
+
+.filters-container td:nth-child(1), td:nth-child(2) {
+    width: 10%;
+}
+
+.filter-error {
+    color: red;
+    font-size: 0.8em;
+}
+
+.car-container button {
+    margin-left: auto;
+    margin-right: 1em;
+}
