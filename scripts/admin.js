@@ -10,6 +10,9 @@ const tableHeader = {
         <th>Pincode</th>
         <th>Highest Price</th>
         <th>Lowest Price</th>
+        <th>Description</th>
+        <th>Link</th>
+        <th>Image</th>
         <th></th>`,
     vehicle:
         `<th>Vehicle ID</th>
@@ -58,7 +61,6 @@ const tableHeader = {
         <th>First Name</th>
         <th>Middle Name</th>
         <th>Last Name</th>
-        <th>Is Admin?</th>
         <th></th>`,
     local_business:
         `<th>UID</th>
@@ -97,19 +99,24 @@ const tableHeader = {
         <th>Certificate</th>
         <th>Is Verified?</th>
         <th>Verified By</th>
+        <th></th>`,
+    upload_hotel_image:
+        `<th>Hotel ID</th>
+        <th>Hotel Name</th>
+        <th>Current Image</th>
         <th></th>`
 };
 
 // only needed for tables where data can be added by the admin
 const tableCols = {
     hotel: [ "hotel_id", "name", "address_line1", "address_line2", "address_line3", "pincode", 'highest_price', 
-        "lowest_price" ],
+        "lowest_price", "description", "link", "image" ],
     vehicle: [ "vehicle_id", "license_plate", "colour", "type", "driver_id" ],
     driver: [ "driver_id", "fname", "mname", "lname", "phone_num", "license_num" ],
     tourist_spot: [ "id", "name", "address_line1", "address_line2", "address_line3", "pincode", 'description', 
     "opening_time", "closing_time" ],
     user: [ "uid", "email", "phone_num", "password", "salt_value" ],
-    general_user: [ "uid", "fname", "mname", "lname", "is_admin" ],
+    general_user: [ "uid", "fname", "mname", "lname" ],
     local_business: [ "uid", "address_line1", "address_line2", "address_line3", "pincode", "business_name", "aadhaar_num" ],
     vehicle_booking: [ "booking_id", "booked_by", "from_date", "till_date", "vehicle_id" ]
 }
@@ -131,9 +138,21 @@ const cyrb53 = function(str, seed = 0) {
     return 4294967296 * (2097151 & h2) + (h1>>>0);
 };
 
+$(window).on('unload', window, () => {
+    $(window).off('unload', window);
+});
+
 $(document).ready(() => {
+    console.log(sessionStorage.getItem("uid") == location.href.substring(location.href.lastIndexOf("/") + 1));
     if (sessionStorage.getItem("name") === null) {
         alert("Access denied, not logged in!");
+        window.open('/', "_self");
+
+        return;
+    } 
+
+    if (sessionStorage.getItem("uid") !== location.href.substring(location.href.lastIndexOf("/") + 1)) {
+        alert("Access denied, non-admin user!");
         window.open('/', "_self");
 
         return;
@@ -187,28 +206,43 @@ function displayTableHeader(id) {
 }
 
 function getDataFrom(table) {
-    if (table === 'verify_lb_certificate') {
-        fetch(`${ ServerAPI.server }/get-certificates`, {
-            method: 'GET',
-            headers: { "Content-Type": "application/json" }
-        }).then(response => {
-            response.json().then(data => {
-                currentTableData = data;
-                console.log(currentTableData);
-                displayCertificateVerification();
+    switch (table) {
+        case "verify_lb_certificate":
+            fetch(`${ ServerAPI.server }/get-certificates`, {
+                method: 'GET',
+                headers: { "Content-Type": "application/json" }
+            }).then(response => {
+                response.json().then(data => {
+                    currentTableData = data;
+                    console.log(currentTableData);
+                    displayCertificateVerification();
+                });
             });
-        });
-    } else {
-        fetch(`${ ServerAPI.server }/get/${ table }`, {
-            method: 'GET',
-            headers: { "Content-Type": "application/json" }
-        }).then(response => {
-            response.json().then(data => {
-                currentTableData = data;
-                currentTableData.currentTable = table;
-                displayData(data);
+            break;
+        case "upload_hotel_image":
+            fetch(`${ ServerAPI.server }/hotel-images-info`, {
+                method: "GET",
+                headers: { "Content-Type": "application/json" }
+            }).then(response => {
+                response.json().then(data => {
+                    currentTableData = data;
+                    console.log(currentTableData);
+                    displayHotelImageUpload();
+                });
             });
-        });
+            break;
+        default:
+            fetch(`${ ServerAPI.server }/get/${ table }`, {
+                method: 'GET',
+                headers: { "Content-Type": "application/json" }
+            }).then(response => {
+                response.json().then(data => {
+                    currentTableData = data;
+                    currentTableData.currentTable = table;
+                    console.log(currentTableData);
+                    displayData(data);
+                });
+            });
     }
 }
 
@@ -221,7 +255,7 @@ function displayCertificateVerification() {
         tbody.innerHTML += 
         `<tr>
             <td>${ currentTableData.certificates[i].uid }</td>
-            <td><a href=".${ currentTableData.certificates[i].link }" target="_blank">Click to check</a></td>
+            <td><a href="${ ServerAPI.server }/${ currentTableData.certificates[i].link }" target="_blank">Click to check</a></td>
             <td>${ currentTableData.certificates[i].isVerified }</td>
             <td>${ currentTableData.certificates[i].verifiedBy }</td>
             <td>${ currentTableData.certificates[i].isVerified ? "" : 
@@ -245,6 +279,48 @@ function verifyCertificate(evt) {
             location.reload();
         else
             alert("Could not verify.");
+    });
+}
+
+function displayHotelImageUpload() {
+    const tbody = document.getElementsByTagName("tbody")[0];
+    tbody.innerHTML = "";
+
+    for (let i = 0; i < currentTableData.length; i++) {
+        tbody.innerHTML += `
+        <tr>
+            <td>${ currentTableData[i].hotel_id }</td>
+            <td>${ currentTableData[i].name }</td>
+            <td>
+                ${ currentTableData[i].image === null || currentTableData[i].image === "null" 
+                ? "Not set" 
+                : `<a href="${ ServerAPI.server }/${ currentTableData[i].image }" target="_blank">Image</a>` }
+            </td>
+            <td>
+                <input id="${ currentTableData[i].hotel_id }" type="file" accept="image/*" />
+            </td>
+        </tr>`;
+
+        $(document).off('change', `#${ currentTableData[i].hotel_id }`, uploadHotelImage);
+        $(document).on('change', `#${ currentTableData[i].hotel_id }`, uploadHotelImage);
+    }
+}
+
+function uploadHotelImage(evt) {
+    const formData = new FormData();
+    formData.append('img', evt.target.files[0]);
+
+    fetch(`${ ServerAPI.server }/upload-hotel-image/${ evt.currentTarget.id }`, {
+        method: 'POST',
+        body: formData
+    }).then(response => {
+        if (response.status === 200) {
+            alert("Uploaded!");
+            getDataFrom("upload_hotel_image");
+        } else {
+            alert("Could not upload hotel image.");
+            response.json().then(data => console.log(data));
+        }
     });
 }
 
@@ -420,7 +496,9 @@ function addData() {
         bodyData[key] = document.getElementById(key).value.length === 0 ? null : document.getElementById(key).value;
     }
 
-    console.log(currentTableData.currentTable);
+    console.log(bodyData);
+
+    // console.log(currentTableData.currentTable);
     fetch(`${ ServerAPI.server }/add/${ currentTableData.currentTable }`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },

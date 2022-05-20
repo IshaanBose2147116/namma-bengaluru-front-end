@@ -1,3 +1,5 @@
+import ServerAPI from "./server_api.js";
+
 let hashMap = {};
 
 function id(id) {
@@ -75,7 +77,7 @@ $(document).ready(() => {
     id("pincode").onkeydown = onlyNumbers;
     id("aadhaar").onkeydown = onlyNumbers;
 
-    fetch(`http://localhost:5000/get-business-details/${ sessionStorage.getItem("uid") }`, {
+    fetch(`${ ServerAPI.server }/get-business-details/${ sessionStorage.getItem("uid") }`, {
             method: "GET",
             headers: { "Content-Type": "application/json" }
     }).then(response => {
@@ -111,7 +113,7 @@ function saveChanges() {
             aadhaar_num: id("aadhaar").value
         }
     
-        fetch(`http://localhost:5000/update/local_business/${ sessionStorage.getItem("uid") }`, {
+        fetch(`${ ServerAPI.server }/update/local_business/${ sessionStorage.getItem("uid") }`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" }, 
             body: JSON.stringify(data)
@@ -132,7 +134,7 @@ function uploadCertificate() {
     const formData = new FormData();
     formData.append('img', files[0]);
 
-    fetch(`http://localhost:5000/save-certificate/${ sessionStorage.getItem("uid") }`, {
+    fetch(`${ ServerAPI.server }/save-certificate/${ sessionStorage.getItem("uid") }`, {
         method: 'POST',
         body: formData
     }).then(response => {
@@ -147,7 +149,7 @@ function uploadCertificate() {
 }
 
 function getCertificates() {
-    fetch(`http://localhost:5000/get-certificates/${ sessionStorage.getItem("uid") }`, {
+    fetch(`${ ServerAPI.server }/get-certificates/${ sessionStorage.getItem("uid") }`, {
         method: 'GET',
         headers: { "Content-Type": "application/json" }
     }).then(response => {
@@ -158,7 +160,7 @@ function getCertificates() {
 
                     id("certificate-container").innerHTML += 
                         `<div>
-                            <a href="${ data.certificates[i].link }" target="_blank">Certificate ${ i + 1 }</a>
+                            <a href="http://localhost:5001/${ data.certificates[i].link }" target="_blank">Certificate ${ i + 1 }</a>
                             ${ data.certificates[i].isVerified ? 
                                 "<span class='material-icons' style='color: green;'>done</span>" : "" }
                             <span id="${ cyrb53(data.absolute[i]) }" class="material-icons delete">delete</span>
@@ -175,7 +177,7 @@ function getCertificates() {
 
 function deleteCertificate(evt) {
     console.log(hashMap[evt.currentTarget.id]);
-    fetch(`http://localhost:5000/delete-certificate`, {
+    fetch(`${ ServerAPI.server }/delete-certificate`, {
         method: 'DELETE',
         headers: { "Content-Type": "text/plain" },
         body: hashMap[evt.currentTarget.id]
