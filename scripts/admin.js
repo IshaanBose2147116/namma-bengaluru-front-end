@@ -464,6 +464,7 @@ function showAddPopup() {
 
     popup.innerHTML += '</div>';
 
+    $(".popup-container").off('click', '.action-button', addData);
     $(".popup-container").on('click', '.action-button', addData);
 }
 
