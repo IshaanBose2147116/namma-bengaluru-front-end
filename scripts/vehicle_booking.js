@@ -131,7 +131,8 @@ function book(evt) {
             getAndViewVehicles();
             alert("Booking complete!");
         } else {
-            alert(response);
+            alert("Internal server error! Check console for error.");
+            console.log(response);
         }
     });
 }

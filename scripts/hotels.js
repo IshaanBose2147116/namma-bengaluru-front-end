@@ -1,30 +1,24 @@
-// import ServerAPI from "./server_api";
-// ServerAPI.getHotelsWithinRange(lowerRange, higherRange, response => {
-//     if (response.status === 200)
-//         // response.data contains array of all hotels within range
-//     else
-// });
+import ServerAPI from "./server_api";
 
 const rangeInput = document.querySelectorAll(".range-input input"),
-  priceInput = document.querySelectorAll(".price-input input"),
-  range = document.querySelector(".slider .progress");
+priceInput = document.querySelectorAll(".price-input input"),
+range = document.querySelector(".slider .progress");
 let priceGap = 1000;
 
 priceInput.forEach((input) => {
-  input.addEventListener("input", (e) => {
-    let minPrice = parseInt(priceInput[0].value),
-      maxPrice = parseInt(priceInput[1].value);
+  	input.addEventListener("input", (e) => {
+		let minPrice = parseInt(priceInput[0].value), maxPrice = parseInt(priceInput[1].value);
 
-    if (maxPrice - minPrice >= priceGap && maxPrice <= rangeInput[1].max) {
-      if (e.target.className === "input-min") {
-        rangeInput[0].value = minPrice;
-        range.style.left = (minPrice / rangeInput[0].max) * 100 + "%";
-      } else {
-        rangeInput[1].value = maxPrice;
-        range.style.right = 100 - (maxPrice / rangeInput[1].max) * 100 + "%";
-      }
-    }
-  });
+		if (maxPrice - minPrice >= priceGap && maxPrice <= rangeInput[1].max) {
+			if (e.target.className === "input-min") {
+				rangeInput[0].value = minPrice;
+				range.style.left = (minPrice / rangeInput[0].max) * 100 + "%";
+			} else {
+				rangeInput[1].value = maxPrice;
+				range.style.right = 100 - (maxPrice / rangeInput[1].max) * 100 + "%";
+			}
+		}
+	});
 });
 
 rangeInput.forEach((input) => {
@@ -47,6 +41,3 @@ rangeInput.forEach((input) => {
   });
 });
 
-function open() {
-  window.open("https://www.lemontreehotels.com/", "_blank");
-}

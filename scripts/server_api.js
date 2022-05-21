@@ -228,7 +228,7 @@ class ServerAPI {
             } else if (response.status === 200) {
                 callback({ status: 200, msg: "OK" });
             } else {
-                callback(response);
+                response.json().then(data => callback(data));
             }
         });
     }
