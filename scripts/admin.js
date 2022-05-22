@@ -40,15 +40,15 @@ const tableHeader = {
         <th>Opening Time</th>
         <th>Closing Time</th>
         <th></th>`,
-    feedback:
-        `<th>Feedback ID</th>
-        <th>Comment</th>
-        <th>Rating</th>
-        <th>Given By</th>
-        <th>Feedback For</th>
-        <th>Given On</th>
-        <th>Feedback On</th>
-        <th></th>`,
+    // feedback:
+    //     `<th>Feedback ID</th>
+    //     <th>Comment</th>
+    //     <th>Rating</th>
+    //     <th>Given By</th>
+    //     <th>Feedback For</th>
+    //     <th>Given On</th>
+    //     <th>Feedback On</th>
+    //     <th></th>`,
     user:
         `<th>UID</th>
         <th>Email</th>
@@ -416,7 +416,7 @@ function showEditPopup(evt) {
             id = key;
         }
 
-        if (key === 'password' || key === 'salt_value') {
+        if (key === 'password' || key === 'salt_value' || key === 'image') {
             document.querySelector(".popup-fields").innerHTML += `
             <div>
                 ${ key }: <input type="text" id="${ key }" value="${ rowData[key] }" readonly="true" />
@@ -435,7 +435,8 @@ function showEditPopup(evt) {
 
     popup.innerHTML += '</div>';
 
-    $(".popup-container").on('click', '.action-button', evt => {
+    $(".popup-container").off('click', `#${ rowData[id] }`, saveEdit);
+    $(".popup-container").on('click', `#${ rowData[id] }`, evt => {
         saveEdit(evt, rowData);
     });
 }
@@ -474,6 +475,8 @@ function saveEdit(evt, rowData) {
     for (let key in rowData) {
         bodyData[key] = document.getElementById(key).value.length === 0 ? null : document.getElementById(key).value;
     }
+
+    console.log('Update body:', bodyData);
 
     fetch(`${ ServerAPI.server }/update/${ currentTableData.currentTable }/${ evt.currentTarget.id }`, {
         method: "PUT",

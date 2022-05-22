@@ -53,7 +53,7 @@ class ServerAPI {
             } else if (response.status === 200) {
                 callback({ status: 200, msg: 'OK'});
             } else {
-                callback(response);
+                response.json().then(data => callback({ status: 500, data: data }));
             }
         });
     }
@@ -112,7 +112,7 @@ class ServerAPI {
             } else if (response.status === 200) {
                 callback({ status: 200, msg: 'OK'});
             } else {
-                callback(response);
+                response.json().then(data => callback({ status: 500, data: data }));
             }
         });
     }
@@ -160,7 +160,7 @@ class ServerAPI {
                         callback({ status: 404, msg: data.msg, errCode: data.errCode });
                     });
                 } else if (response.status === 500) {
-                    callback(response);
+                    response.json().then(data => callback({ status: 500, data: data }));
                 } else {
                     callback({ status: 200, msg: "OK" });
                 }
@@ -179,7 +179,7 @@ class ServerAPI {
                         callback({ status: 404, msg: data.msg, errCode: data.errCode });
                     });
                 } else if (response.status === 500) {
-                    callback(response);
+                    response.json().then(data => callback({ status: 500, data: data }));
                 } else {
                     response.json().then(data => {
                         callback({ status: 200, uid: data.uid, name: data.name, isAdmin: data.isAdmin, isBusiness: data.isBusiness });
@@ -239,7 +239,7 @@ class ServerAPI {
             headers: { "Content-Type": "application/json" }
         }).then(response => {
             if (response.status === 500) {
-                callback(response);
+                response.json().then(data => callback({ status: 500, data: data }));
             } else if (response.status === 204) {
                 callback({ status: 204, msg: "No vehicles booked" });
             } else {
@@ -255,7 +255,7 @@ class ServerAPI {
             method: "DELETE",
             headers: { "Content-Type": "application/json" }
         }).then(response => {
-            callback(response);
+            response.json().then(data => callback({ status: 500, data: data }));
         });
     }
 
@@ -269,7 +269,7 @@ class ServerAPI {
                     callback({ status: 200, data: data });
                 });
             } else {
-                callback(response);
+                response.json().then(data => callback({ status: 500, data: data }));
             }
         });
     }
@@ -284,7 +284,7 @@ class ServerAPI {
                     callback({ status: 200, data: data });
                 });
             } else {
-                callback(response);
+                response.json().then(data => callback({ status: 500, data: data }));
             }
         });
     }
@@ -299,7 +299,7 @@ class ServerAPI {
                     callback({ status: 200, data: data });
                 });
             } else {
-                callback(response);
+                response.json().then(data => callback({ status: 500, data: data }));
             }
         });
     }
