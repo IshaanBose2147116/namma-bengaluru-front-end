@@ -288,21 +288,6 @@ class ServerAPI {
             }
         });
     }
-
-    static getFeedbackOn(resourceID, callback) {
-        fetch(`${ ServerAPI.server }/feedback-on/${ resourceID }`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" }
-        }).then(response => {
-            if (response.status === 200) {
-                response.json().then(data => {
-                    callback({ status: 200, data: data });
-                });
-            } else {
-                response.json().then(data => callback({ status: 500, data: data }));
-            }
-        });
-    }
 }
 
 export default ServerAPI;
