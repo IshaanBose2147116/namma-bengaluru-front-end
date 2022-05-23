@@ -68,6 +68,9 @@ ROUTER.get('/', (req, res) => {
 .get('/booked-vehicles', (req, res) => {
     res.sendFile(path.join(__dirname, '../booked_vehicles.html'));
 })
+.get('/local-employment', (req, res) => {
+    res.sendFile(path.join(__dirname, '../local_employment.html'));
+})
 .get('/admin/:uid', (req, res) => {
     fetch(`${ server }/admin/${ req.params.uid }`)
     .then(response => {

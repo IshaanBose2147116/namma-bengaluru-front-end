@@ -10,7 +10,7 @@ const navLinks = {
             <a class="nav-link" href="/vehicle-booking">Book a Vehicle</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/#travel">Local Employment</a>
+            <a class="nav-link" href="/local-employment">Local Employment</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/offers">Offers</a>
@@ -26,7 +26,7 @@ const navLinks = {
             <a class="nav-link" href="/tourism">Travel & Tourism</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="/#travel">Local Employment</a>
+            <a class="nav-link" href="/local-employment">Local Employment</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="/offers">Offers</a>

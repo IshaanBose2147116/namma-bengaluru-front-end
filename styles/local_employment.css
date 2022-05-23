@@ -1,0 +1,77 @@
+.content-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.job-container {
+    width: 80%;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 12px 35px rgb(158, 158, 158);
+    padding: 1em;
+    margin: 1.5em 0em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 0.5em;
+}
+
+.cust-row {
+    display: flex;
+    width: 100%;
+    column-gap: 0.5em;
+}
+
+.cust-row:first-child {
+    align-items: center;
+}
+
+#job-description {
+    margin: 1em;
+}
+
+.more-info {
+    color: grey;
+    transition: color 0.3s;
+}
+
+.more-info:hover {
+    color: var(--primary-color);
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.action-button {
+    border: none;
+    background-color: #ffc107;
+    padding: 0.2em 0.5em;
+    border-radius: 5px;
+    margin-top: 1em;
+}
+
+.action-button:hover {
+    cursor: pointer;
+    box-shadow: 0 0 10px #6f5400;
+    color: rgb(55, 55, 55);
+}
+
+.cancel-button {
+    margin-left: auto;
+    transition: all 0.3s;
+}
+
+.cancel-button:hover {
+    color: red;
+    cursor: pointer;
+}
+
+[id^="job-info-"] {
+    width: 100%;
+}
+
+.error-text {
+    color: red;
+    font-size: 0.8em;
+}

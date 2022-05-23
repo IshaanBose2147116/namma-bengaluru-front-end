@@ -27,11 +27,8 @@ function viewBookings() {
             console.log(data);
 
             for (var i = 0; i < data.length; i++) {
-                var fromDate = data[i].from_date.replace("T", " ");
-                fromDate = fromDate.split(".")[0];
-
-                var toDate = data[i].till_date.replace("T", " ");
-                toDate = toDate.split(".")[0];
+                var fromDate = new Date(data[i].from_date).toLocaleString("sv");
+                var toDate = new Date(data[i].till_date).toLocaleString("sv");
 
                 var isOutdated = (new Date(data[i].till_date) - new Date()) <= 0;
 
