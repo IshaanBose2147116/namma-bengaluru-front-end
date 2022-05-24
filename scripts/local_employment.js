@@ -294,7 +294,7 @@ function displayJobPostings(data) {
             <span class="more-info" id="more-info-${i}">More Info</span>
             <div id="job-info-${i}" style="display: none;">
                 <div class="cust-row">
-                    <div id="job-description">${ data[i].description }</div>
+                    <div id="job-description">${ data[i].description === null ? "N/A" : data[i].description }</div>
                 </div>
                 <div class="cust-row">
                     <b>Experience:</b> <span>${ data[i].experience } years</span>
